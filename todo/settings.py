@@ -94,7 +94,7 @@ DATABASES = {
         'NAME':'stack',
         'USER':'mohan',
         'PASSWORD':'Mohan@1210',
-        'HOST': 'localhost',
+        'HOST': 'mytodoappreact.herokupp.com',
         'PORT': '5432'
         
 
@@ -146,7 +146,7 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
-    'http://localhost:8000'
+    'https://mytodoappreact.herokuapp.com/'
 )
 
 STATIC_ROOT=os.path.join(BASE_DIR,'static')
