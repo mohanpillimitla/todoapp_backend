@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'todos',
+    'accounts',
   'corsheaders',
 
 
@@ -62,11 +63,13 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'todo.urls'
+TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [TEMPLATE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,13 +92,13 @@ DATABASES = {
     'default': {
 
 
-    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
 
-        'NAME':'stack',
-        'USER':'mohan',
-        'PASSWORD':'Mohan@1210',
-        'HOST': 'mytodoappreact.herokupp.com',
-        'PORT': '5432'
+    #     'NAME':'stack',
+    #     'USER':'postgres',
+    #     'PASSWORD':'mohan@1210',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432'
         
 
 
@@ -137,6 +140,26 @@ USE_L10N = True
 
 USE_TZ = True
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+
+
+
+JWT_AUTH = {
+    'JWT_RESPONSE_PAYLOAD_HANDLER' :'todo.utils.custom_jwt_response_handler'
+}
+
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -146,7 +169,10 @@ STATIC_URL = '/static/'
 
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
-    'https://mytodoappreact.herokuapp.com/'
+    'https://mytodoappreact.herokuapp.com'
 )
 
 STATIC_ROOT=os.path.join(BASE_DIR,'static')
+
+import dj_database_url
+DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
